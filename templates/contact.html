@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Contáctame - Portfolio</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="./static/assets/css/main.css" />
+	<noscript>
+		<link rel="stylesheet" href="./static/assets/css/noscript.css" />
+	</noscript>
+</head>
+
+<body class="is-preload">
+	<div id="page-wrapper">
+
+		<!-- Header -->
+		<header id="header">
+			<h1 id="logo"><a href="/">Portfolio</a></h1>
+			<nav id="nav">
+				<ul>
+					<li><a href="/">Home</a></li>
+					<li>
+						<a href="#">Menú</a>
+						<ul>
+							<li><a href="/about">Sobre mí</a></li>
+							<li><a href="/projects">Mis proyectos</a></li>
+							<li><a href="/contact">Contáctame</a></li>
+						</ul>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<!-- Main -->
+		<div id="main" class="wrapper style1">
+			<div class="container">
+				<header class="major">
+					<h2>Contáctame</h2>
+					<p>Estoy disponible para nuevos proyectos y colaboraciones.</p>
+				</header>
+
+				<!-- Form -->
+				<section>
+					<h3>Envía un mensaje</h3>
+					<form id="contact-form" method="post" action="#">
+						<div class="row gtr-uniform gtr-50">
+							<div class="col-6 col-12-xsmall">
+								<input type="email" name="email" id="email" value="" placeholder="Email" required />
+							</div>
+							<div class="col-6 col-12-xsmall">
+								<input type="text" name="subject" id="subject" value="" placeholder="Asunto" required />
+							</div>
+							<div class="col-12">
+								<textarea name="message" id="message" placeholder="Escribe tu mensaje aquí..." rows="6"
+									required></textarea>
+							</div>
+							<div class="col-12">
+								<ul class="actions">
+									<li><input type="submit" value="Enviar Mensaje" class="primary" /></li>
+									<li><input type="reset" value="Limpiar" /></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+					<div id="form-message" style="margin-top: 20px; font-weight: bold;"></div>
+				</section>
+			</div>
+		</div>
+
+		<!-- Footer -->
+		<footer id="footer">
+			<ul class="icons">
+				<li><a href="#" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+				<li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+			</ul>
+			<ul class="copyright">
+				<li>&copy; Untitled. All rights reserved.</li>
+				<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+			</ul>
+		</footer>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="/static/assets/js/jquery.min.js"></script>
+	<script src="/static/assets/js/jquery.scrolly.min.js"></script>
+	<script src="/static/assets/js/jquery.dropotron.min.js"></script>
+	<script src="/static/assets/js/jquery.scrollex.min.js"></script>
+	<script src="/static/assets/js/browser.min.js"></script>
+	<script src="/static/assets/js/breakpoints.min.js"></script>
+	<script src="/static/assets/js/util.js"></script>
+	<script src="/static/assets/js/main.js"></script>
+	<script>
+		document.getElementById('contact-form').addEventListener('submit', function (e) {
+			e.preventDefault();
+
+			var form = e.target;
+			var data = new FormData(form);
+			var messageDiv = document.getElementById('form-message');
+
+			fetch('/submit_form', {
+				method: 'POST',
+				body: data
+			})
+				.then(response => response.json())
+				.then(data => {
+					if (data.message === 'success') {
+						messageDiv.textContent = "Gracias, estaremos en contacto pronto.";
+						messageDiv.style.color = "green"; // Neon green handled by CSS later if needed, safe inline for now
+						form.reset();
+					} else {
+						messageDiv.textContent = "Algo ha salido mal, por favor vuelve a intentar.";
+						messageDiv.style.color = "red";
+					}
+				})
+				.catch(error => {
+					console.error('Error:', error);
+					messageDiv.textContent = "Algo ha salido mal, por favor vuelve a intentar.";
+					messageDiv.style.color = "red";
+				});
+		});
+	</script>
+</body>
+
+</html>
